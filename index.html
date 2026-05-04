@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#060d0a">
+<title>Mi camino sin tabaco</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --radius: 20px;
+  --radius-sm: 12px;
+
+  --ink: rgba(236, 255, 245, 0.94);
+  --ink-soft: rgba(236, 255, 245, 0.72);
+  --muted: rgba(236, 255, 245, 0.45);
+  --line: rgba(236, 255, 245, 0.12);
+  --line-strong: rgba(236, 255, 245, 0.22);
+
+  --accent: #10b981;
+  --accent-hi: #34d399;
+  --gold: #fbbf24;
+  --danger: #ef4444;
+  --danger-hi: #f87171;
+}
+
+/* ── Liquid background ── */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 20px 16px 110px;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(16, 185, 129, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 88%, rgba(52, 211, 153, 0.14) 0%, transparent 52%),
+    radial-gradient(ellipse at 50% 50%, rgba(6, 20, 14, 0.6) 0%, transparent 65%),
+    linear-gradient(155deg, #060d0a 0%, #030808 45%, #050e0a 100%);
+  background-attachment: fixed;
+}
+
+.container { max-width: 680px; margin: 0 auto; }
+
+/* ── Glass surfaces ── */
+.glass {
+  background: rgba(236, 255, 245, 0.05);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(236, 255, 245, 0.11);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(236,255,245,0.08);
+}
+
+.glass-strong {
+  background: rgba(236, 255, 245, 0.08);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(236, 255, 245, 0.16);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(236,255,245,0.14);
+}
+
+/* ── Liquid lift animations ── */
+.lg-lift {
+  transition: transform 230ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 230ms ease, border-color 180ms ease, background 180ms ease;
+  will-change: transform;
+}
+.lg-lift:hover {
+  transform: scale(1.03) translateY(-2px);
+  border-color: rgba(236,255,245,0.26) !important;
+  box-shadow: 0 0 0 1.5px rgba(236,255,245,0.18), 0 20px 56px rgba(0,0,0,0.55), 0 8px 20px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(236,255,245,0.24) !important;
+}
+.lg-lift:active {
+  transform: scale(0.975) translateY(1px) !important;
+  box-shadow: 0 0 0 1px rgba(236,255,245,0.08), 0 4px 14px rgba(0,0,0,0.35), inset 0 2px 10px rgba(0,0,0,0.25) !important;
+  transition-duration: 80ms !important;
+}
+
+.lg-lift-sm {
+  transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 220ms ease, border-color 180ms ease;
+  will-change: transform;
+}
+.lg-lift-sm:hover {
+  transform: scale(1.018) translateY(-1.5px);
+  border-color: rgba(236,255,245,0.22) !important;
+  box-shadow: 0 0 0 1px rgba(236,255,245,0.14), 0 12px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(236,255,245,0.2) !important;
+}
+.lg-lift-sm:active {
+  transform: scale(0.988) translateY(0) !important;
+  transition-duration: 70ms !important;
+}
+
+.lg-lift-card {
+  transition: transform 280ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 280ms ease, border-color 200ms ease;
+  will-change: transform;
+}
+.lg-lift-card:hover {
+  transform: scale(1.012) translateY(-3px);
+  border-color: rgba(236,255,245,0.24) !important;
+  box-shadow: 0 0 0 1px rgba(236,255,245,0.16), 0 24px 64px rgba(0,0,0,0.55), 0 10px 28px rgba(0,0,0,0.32), inset 0 1.5px 0 rgba(236,255,245,0.2) !important;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-top: 10px;
+  position: relative;
+}
+.header h1 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+}
+.settings-btn {
+  position: absolute;
+  right: 0; top: 8px;
+  background: rgba(236,255,245,0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 17px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1), background 180ms, border-color 180ms;
+}
+.settings-btn:hover {
+  transform: scale(1.1) rotate(30deg);
+  background: rgba(236,255,245,0.1);
+  border-color: var(--line-strong);
+}
+
+/* ── Hero card ── */
+.hero {
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 14px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(5,46,22,0.85) 0%, rgba(6,78,59,0.7) 50%, rgba(4,120,87,0.55) 100%);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(52,211,153,0.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(52,211,153,0.15), inset 0 1px 0 rgba(52,211,153,0.2);
+}
+.hero-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: rgba(52,211,153,0.85);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.hero-time {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.hero-sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+/* ── Money card ── */
+.money-card {
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 14px;
+  text-align: center;
+  background: rgba(236,255,245,0.05);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(52,211,153,0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(52,211,153,0.12);
+}
+.money-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.money-amount {
+  font-size: 60px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+  background: linear-gradient(135deg, #34d399 0%, #10b981 60%, #6ee7b7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-variant-numeric: tabular-nums;
+}
+.money-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ── Stats grid ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.stat-card {
+  border-radius: var(--radius-sm);
+  padding: 18px 16px;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent-hi);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-weight: 600;
+}
+
+/* ── Section card ── */
+.section-card {
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* ── Goals ── */
+.goals { display: flex; flex-direction: column; gap: 12px; }
+.goal {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(236,255,245,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  transition: border-color 200ms, background 200ms;
+}
+.goal.completed {
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(52,211,153,0.35);
+}
+.goal-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.goal-name { font-weight: 600; font-size: 14px; flex: 1; }
+.goal-amount { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.goal-bar { height: 6px; background: rgba(236,255,245,0.08); border-radius: 99px; overflow: hidden; }
+.goal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hi));
+  border-radius: 99px;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 10px rgba(52,211,153,0.5);
+}
+.goal-fill.full { background: linear-gradient(90deg, var(--gold), #f59e0b); }
+.goal-pct { font-size: 11px; color: var(--muted); margin-top: 4px; text-align: right; font-variant-numeric: tabular-nums; }
+.goal-delete {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 14px; padding: 4px; opacity: 0.5;
+  transition: opacity 150ms, color 150ms;
+}
+.goal-delete:hover { opacity: 1; color: var(--danger); }
+
+/* ── Add goal button ── */
+.add-goal-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: var(--radius-sm);
+  background: rgba(236,255,245,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px dashed rgba(236,255,245,0.18);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1), border-color 180ms, color 180ms, background 180ms;
+}
+.add-goal-btn:hover {
+  transform: scale(1.015) translateY(-1px);
+  border-color: rgba(52,211,153,0.4);
+  color: var(--accent-hi);
+  background: rgba(16,185,129,0.06);
+}
+
+/* ── Health milestones ── */
+.health-list { display: flex; flex-direction: column; gap: 10px; }
+.health-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(236,255,245,0.03);
+  border: 1px solid var(--line);
+  transition: background 300ms, border-color 300ms;
+}
+.health-item.unlocked {
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(52,211,153,0.3);
+}
+.health-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  background: rgba(236,255,245,0.06);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  transition: background 300ms, border-color 300ms;
+}
+.health-item.unlocked .health-icon {
+  background: rgba(16,185,129,0.25);
+  border-color: rgba(52,211,153,0.4);
+}
+.health-text { flex: 1; }
+.health-time { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; }
+.health-desc { font-size: 13px; margin-top: 2px; color: var(--ink-soft); }
+.health-item.unlocked .health-desc { color: var(--ink); font-weight: 500; }
+
+/* ── Calendar ── */
+.calendar { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; }
+.day {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(236,255,245,0.05);
+  border: 1px solid rgba(236,255,245,0.06);
+  transition: background 300ms;
+}
+.day.complete {
+  background: var(--accent);
+  border-color: var(--accent-hi);
+  box-shadow: 0 0 6px rgba(16,185,129,0.4);
+}
+.day.partial { background: rgba(16,185,129,0.4); }
+.day.today { border: 1.5px solid var(--accent-hi); }
+
+/* ── Relapse button ── */
+.relapse-btn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(236,255,245,0.03);
+  border: 1px solid rgba(236,255,245,0.1);
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  margin-top: 4px;
+  transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1), border-color 180ms, color 180ms;
+}
+.relapse-btn:hover {
+  transform: scale(1.01) translateY(-1px);
+  border-color: rgba(251,191,36,0.35);
+  color: var(--gold);
+}
+
+/* ── SOS button ── */
+.sos-btn {
+  position: fixed;
+  bottom: 22px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 16px 36px;
+  border-radius: 99px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(220,38,38,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+  z-index: 100;
+  letter-spacing: 1.5px;
+  font-family: inherit;
+  transition: transform 230ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 230ms ease;
+}
+.sos-btn:hover {
+  transform: translateX(-50%) scale(1.05) translateY(-2px);
+  box-shadow: 0 18px 44px rgba(220,38,38,0.65), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.sos-btn:active {
+  transform: translateX(-50%) scale(0.96) translateY(1px) !important;
+  transition-duration: 80ms !important;
+}
+
+/* ── Buttons ── */
+button.btn-primary, button.btn-secondary, button.btn-danger {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 13px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  flex: 1;
+  transition: transform 230ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 230ms ease, border-color 180ms ease, background 180ms ease;
+  will-change: transform;
+}
+button.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #059669);
+  color: #fff;
+  border: 1px solid rgba(236,255,245,0.18);
+  box-shadow: 0 6px 18px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+button.btn-primary:hover {
+  transform: scale(1.03) translateY(-2px);
+  border-color: rgba(236,255,245,0.3);
+  box-shadow: 0 0 0 1.5px rgba(52,211,153,0.25), 0 18px 44px rgba(16,185,129,0.5), inset 0 1.5px 0 rgba(255,255,255,0.28);
+}
+button.btn-primary:active {
+  transform: scale(0.975) translateY(1px);
+  box-shadow: 0 2px 8px rgba(16,185,129,0.3), inset 0 2px 8px rgba(0,0,0,0.2);
+  transition-duration: 80ms;
+}
+button.btn-secondary {
+  background: rgba(236,255,245,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+button.btn-secondary:hover {
+  transform: scale(1.02) translateY(-1px);
+  background: rgba(236,255,245,0.1);
+  color: var(--ink);
+  border-color: var(--line-strong);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(236,255,245,0.14);
+}
+button.btn-secondary:active {
+  transform: scale(0.985);
+  transition-duration: 70ms;
+}
+button.btn-danger {
+  background: linear-gradient(135deg, #991b1b, var(--danger));
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 6px 18px rgba(239,68,68,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+button.btn-danger:hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 0 14px 36px rgba(239,68,68,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* ── Modal ── */
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+.modal.active { display: flex; }
+.modal-content {
+  background: rgba(15, 35, 25, 0.85);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(236,255,245,0.16);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.65), inset 0 1px 0 rgba(236,255,245,0.12);
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--ink);
+}
+.modal-quote {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 22px 0;
+  line-height: 1.45;
+  color: var(--accent-hi);
+}
+.modal-stats {
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin: 16px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  backdrop-filter: blur(10px);
+}
+.modal-stats strong { color: var(--accent-hi); font-size: 16px; }
+.modal p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px; }
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+
+/* ── Inputs ── */
+.input-group { margin-bottom: 14px; }
+.input-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.input-group input {
+  width: 100%;
+  padding: 13px 15px;
+  background: rgba(236,255,245,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms;
+}
+.input-group input:focus {
+  border-color: rgba(52,211,153,0.5);
+  background: rgba(236,255,245,0.08);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+}
+
+/* ── Empty / setup screen ── */
+.empty {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+.empty-icon { font-size: 72px; margin-bottom: 8px; }
+.empty h2 { font-size: 30px; font-weight: 800; color: var(--ink); }
+.empty p { font-size: 15px; color: var(--ink-soft); line-height: 1.65; max-width: 380px; }
+.empty .btn-primary { max-width: 300px; padding: 18px; font-size: 17px; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(236,255,245,0.12); border-radius: 3px; }
+
+@media (max-width: 480px) {
+  .hero-time { font-size: 38px; }
+  .money-amount { font-size: 46px; }
+  .stat-value { font-size: 26px; }
+  .calendar { grid-template-columns: repeat(10, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Setup screen -->
+  <div id="setup-screen" class="empty" style="display:none;">
+    <div class="empty-icon">🚭</div>
+    <h2>Vamos a empezar</h2>
+    <p>Pulsa el botón cuando hagas el último cigarrillo. Empezaremos a contar desde ese momento exacto.</p>
+    <p style="font-size:13px; color:var(--muted);">¿Ya llevas un rato? Usa "Personalizar" para poner la hora real.</p>
+    <button class="btn-primary lg-lift" onclick="startNow()" style="width:100%; max-width:300px; padding:18px; font-size:17px;">Empezar ahora 🚀</button>
+    <button class="btn-secondary lg-lift-sm" onclick="showCustomStart()" style="width:100%; max-width:300px; padding:14px; margin-top:4px;">Personalizar fecha/hora</button>
+  </div>
+
+  <!-- Main screen -->
+  <div id="main-screen" style="display:none;">
+
+    <div class="header">
+      <h1>Mi camino sin tabaco</h1>
+      <button class="settings-btn" onclick="openSettings()">⚙️</button>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">Llevas sin fumar</div>
+      <div class="hero-time" id="time-display">0d 0h 0m</div>
+      <div class="hero-sub" id="time-sub">desde el momento clave</div>
+    </div>
+
+    <div class="money-card lg-lift-card">
+      <div class="money-label">💰 Has ahorrado</div>
+      <div class="money-amount" id="money-display">0,00 €</div>
+      <div class="money-sub" id="money-sub">cargando...</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card glass lg-lift-card">
+        <div class="stat-value" id="cigs-display">0</div>
+        <div class="stat-label">🚬 No fumados</div>
+      </div>
+      <div class="stat-card glass lg-lift-card">
+        <div class="stat-value" id="streak-display">0</div>
+        <div class="stat-label">🔥 Días seguidos</div>
+      </div>
+    </div>
+
+    <div class="section-card glass">
+      <div class="section-title">🎯 Tus metas de ahorro</div>
+      <div id="goals-list" class="goals"></div>
+      <button class="add-goal-btn" onclick="openAddGoal()">+ Añadir meta</button>
+    </div>
+
+    <div class="section-card glass">
+      <div class="section-title">❤️ Tu salud mejora</div>
+      <div id="health-list" class="health-list"></div>
+    </div>
+
+    <div class="section-card glass">
+      <div class="section-title">📅 Tu racha</div>
+      <div id="calendar" class="calendar"></div>
+    </div>
+
+    <button class="relapse-btn" onclick="confirmRelapse()">He recaído — reiniciar contador</button>
+
+  </div>
+</div>
+
+<button class="sos-btn" onclick="openSOS()" id="sos-btn" style="display:none;">🆘 ANTOJO</button>
+
+<!-- SOS Modal -->
+<div class="modal" id="sos-modal">
+  <div class="modal-content">
+    <h2>Respira. Vas a poder.</h2>
+    <div class="modal-quote" id="sos-quote">—</div>
+    <div class="modal-stats">
+      Llevas <strong id="sos-time">0</strong> sin fumar<br>
+      Has ahorrado <strong id="sos-money">0 €</strong><br>
+      <span style="font-size:12px; color:var(--muted);">Si fumas ahora, pierdes esta racha.</span>
+    </div>
+    <p style="text-align:center;">El antojo dura 3-5 minutos. Bebe agua, sal a andar, llama a alguien. Pasará.</p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="closeModal('sos-modal')">¡Aguanto! 💪</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add goal modal -->
+<div class="modal" id="goal-modal">
+  <div class="modal-content">
+    <h2>Nueva meta de ahorro</h2>
+    <div class="input-group">
+      <label>¿Para qué quieres ahorrar?</label>
+      <input type="text" id="goal-name" placeholder="Ej: Escapada fin de semana">
+    </div>
+    <div class="input-group">
+      <label>Importe (€)</label>
+      <input type="number" id="goal-amount" placeholder="300" inputmode="decimal">
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="closeModal('goal-modal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveGoal()">Añadir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal" id="settings-modal">
+  <div class="modal-content">
+    <h2>⚙️ Ajustes</h2>
+    <div class="input-group">
+      <label>Cigarrillos al día</label>
+      <input type="number" id="set-cigs" inputmode="decimal">
+    </div>
+    <div class="input-group">
+      <label>Cigarrillos por paquete</label>
+      <input type="number" id="set-perpack" inputmode="decimal">
+    </div>
+    <div class="input-group">
+      <label>Precio del paquete (€)</label>
+      <input type="number" id="set-price" step="0.01" inputmode="decimal">
+    </div>
+    <div class="input-group">
+      <label>Fecha y hora de inicio</label>
+      <input type="datetime-local" id="set-start">
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="closeModal('settings-modal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveSettings()">Guardar</button>
+    </div>
+    <button class="btn-danger lg-lift-sm" style="width:100%; margin-top:18px;" onclick="resetAll()">Borrar todo y empezar de cero</button>
+  </div>
+</div>
+
+<!-- Custom start modal -->
+<div class="modal" id="custom-start-modal">
+  <div class="modal-content">
+    <h2>¿Cuándo fue tu último cigarrillo?</h2>
+    <div class="input-group">
+      <label>Fecha y hora</label>
+      <input type="datetime-local" id="custom-start-input">
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="closeModal('custom-start-modal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveCustomStart()">Empezar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_DATA = {
+  startTime: null,
+  cigsPerDay: 25,
+  cigsPerPack: 20,
+  pricePerPack: 5.25,
+  goals: [
+    { id: 1, name: "Pagar Claude Max este mes", amount: 100 },
+    { id: 2, name: "Un mes entero sin fumar", amount: 197 },
+    { id: 3, name: "Un año de Claude Max pagado", amount: 1200 },
+    { id: 4, name: "Ahorro a 1 año completo", amount: 2400 }
+  ]
+};
+
+const QUOTES = [
+  "Cada minuto que aguantas, tu cuerpo se está curando.",
+  "El antojo dura 3 minutos. Tu salud dura toda la vida.",
+  "No estás dejando algo. Estás recuperando algo.",
+  "Eres más fuerte que un cigarrillo.",
+  "Tu yo del futuro te está mirando. Hazle sentir orgulloso.",
+  "Cada euro ahorrado es un voto por tu vida.",
+  "El tabaco promete calma y entrega ansiedad.",
+  "Has llegado hasta aquí. No lo tires por 5 minutos.",
+  "Respira hondo. Eso es lo único que necesitas ahora.",
+  "El cigarro te roba tiempo, dinero y salud. Hoy no le das nada.",
+  "Mil cigarrillos no fumados empiezan por uno.",
+  "No fumes. Ahorra. Vive.",
+  "La racha que ves ahí arriba la has ganado tú solo.",
+  "En 3 minutos el antojo habrá pasado. En 3 meses notarás la diferencia."
+];
+
+const HEALTH = [
+  { mins: 20,           icon: "💓", desc: "Tu pulso y presión vuelven a la normalidad" },
+  { mins: 60*8,         icon: "🩸", desc: "Bajan los niveles de CO en sangre" },
+  { mins: 60*24,        icon: "❤️", desc: "Disminuye el riesgo de infarto" },
+  { mins: 60*48,        icon: "👅", desc: "Recuperas gusto y olfato" },
+  { mins: 60*72,        icon: "🫁", desc: "Respiras mejor — los bronquios se relajan" },
+  { mins: 60*24*14,     icon: "🏃", desc: "Mejora la circulación y capacidad pulmonar" },
+  { mins: 60*24*30,     icon: "😮‍💨", desc: "Menos tos, menos congestión, más energía" },
+  { mins: 60*24*90,     icon: "💪", desc: "Función pulmonar hasta un 30% mejor" },
+  { mins: 60*24*270,    icon: "✨", desc: "Casi sin tos ni problemas respiratorios" },
+  { mins: 60*24*365,    icon: "🎉", desc: "Tu riesgo cardiovascular cae a la mitad" },
+  { mins: 60*24*365*5,  icon: "🛡️", desc: "Riesgo de ictus igual al de un no fumador" },
+  { mins: 60*24*365*10, icon: "🏆", desc: "Riesgo de cáncer de pulmón cae a la mitad" }
+];
+
+let data = loadData();
+
+function loadData() {
+  try {
+    const s = localStorage.getItem('quitSmokingData');
+    return s ? { ...DEFAULT_DATA, ...JSON.parse(s) } : { ...DEFAULT_DATA };
+  } catch(e) { return { ...DEFAULT_DATA }; }
+}
+
+function saveData() { localStorage.setItem('quitSmokingData', JSON.stringify(data)); }
+
+function init() {
+  if (!data.startTime) {
+    document.getElementById('setup-screen').style.display = 'flex';
+    document.getElementById('main-screen').style.display = 'none';
+    document.getElementById('sos-btn').style.display = 'none';
+  } else {
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('main-screen').style.display = 'block';
+    document.getElementById('sos-btn').style.display = 'block';
+    render();
+    setInterval(render, 1000);
+  }
+}
+
+function startNow() { data.startTime = Date.now(); saveData(); init(); }
+
+function showCustomStart() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  document.getElementById('custom-start-input').value = now.toISOString().slice(0,16);
+  document.getElementById('custom-start-modal').classList.add('active');
+}
+
+function saveCustomStart() {
+  const val = document.getElementById('custom-start-input').value;
+  if (!val) return;
+  data.startTime = new Date(val).getTime();
+  saveData();
+  closeModal('custom-start-modal');
+  init();
+}
+
+function elapsedMins() { return (Date.now() - data.startTime) / 60000; }
+
+function moneySaved() {
+  const mins = elapsedMins();
+  const cigsPerMin = data.cigsPerDay / (24*60);
+  return mins * cigsPerMin * (data.pricePerPack / data.cigsPerPack);
+}
+
+function fmt(n) { return n.toLocaleString('es-ES', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' €'; }
+
+function fmtTime(mins) {
+  const s = Math.floor(mins * 60);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (d > 0) return `${d}d ${h}h ${m}m`;
+  if (h > 0) return `${h}h ${m}m ${sec}s`;
+  return `${m}m ${sec}s`;
+}
+
+function fmtMilestone(mins) {
+  if (mins < 60) return `${mins} min`;
+  if (mins < 60*24) return `${mins/60} h`;
+  const d = mins/(60*24);
+  if (d < 30) return `${d} días`;
+  if (d < 365) return `${Math.round(d/30)} meses`;
+  return `${Math.round(d/365)} año${d>=730?'s':''}`;
+}
+
+function render() {
+  const mins = elapsedMins();
+  const money = moneySaved();
+  const cigs = Math.floor(mins * data.cigsPerDay / (24*60));
+  const days = Math.floor(mins / (24*60));
+
+  document.getElementById('time-display').textContent = fmtTime(mins);
+  const d = new Date(data.startTime);
+  document.getElementById('time-sub').textContent = 'desde ' + d.toLocaleDateString('es-ES', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' });
+
+  document.getElementById('money-display').textContent = fmt(money);
+  const perDay = (data.cigsPerDay / data.cigsPerPack) * data.pricePerPack;
+  document.getElementById('money-sub').textContent = `+ ${fmt(perDay)} cada día · ${fmt(perDay*30)} al mes`;
+
+  document.getElementById('cigs-display').textContent = cigs.toLocaleString('es-ES');
+  document.getElementById('streak-display').textContent = days;
+
+  renderGoals(money);
+  renderHealth(mins);
+  renderCalendar(mins);
+}
+
+function renderGoals(money) {
+  document.getElementById('goals-list').innerHTML = '';
+  data.goals.forEach(g => {
+    const pct = Math.min(100, (money / g.amount) * 100);
+    const done = pct >= 100;
+    const el = document.createElement('div');
+    el.className = 'goal' + (done ? ' completed' : '');
+    el.innerHTML = `
+      <div class="goal-header">
+        <span class="goal-name">${done ? '✅ ' : ''}${esc(g.name)}</span>
+        <span class="goal-amount">${fmt(Math.min(money,g.amount))} / ${fmt(g.amount)}</span>
+        <button class="goal-delete" onclick="deleteGoal(${g.id})">✕</button>
+      </div>
+      <div class="goal-bar"><div class="goal-fill${done?' full':''}" style="width:${pct}%"></div></div>
+      <div class="goal-pct">${pct.toFixed(1)}%${done ? ' · ¡Conseguido! 🎉' : ''}</div>`;
+    document.getElementById('goals-list').appendChild(el);
+  });
+}
+
+function renderHealth(mins) {
+  document.getElementById('health-list').innerHTML = '';
+  HEALTH.forEach(m => {
+    const unlocked = mins >= m.mins;
+    const el = document.createElement('div');
+    el.className = 'health-item' + (unlocked ? ' unlocked' : '');
+    el.innerHTML = `
+      <div class="health-icon">${unlocked ? '✓' : m.icon}</div>
+      <div class="health-text">
+        <div class="health-time">${fmtMilestone(m.mins)}</div>
+        <div class="health-desc">${m.desc}</div>
+      </div>`;
+    document.getElementById('health-list').appendChild(el);
+  });
+}
+
+function renderCalendar(mins) {
+  const cal = document.getElementById('calendar');
+  cal.innerHTML = '';
+  const total = Math.max(45, Math.ceil(mins/(60*24)) + 5);
+  const complete = Math.floor(mins/(60*24));
+  const partial = (mins/(60*24)) - complete;
+  for (let i = 0; i < total; i++) {
+    const el = document.createElement('div');
+    el.className = 'day';
+    if (i < complete) el.classList.add('complete');
+    else if (i === complete) { el.classList.add('today'); if (partial > 0.1) el.classList.add('partial'); }
+    cal.appendChild(el);
+  }
+}
+
+function esc(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function openSOS() {
+  document.getElementById('sos-quote').textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  document.getElementById('sos-time').textContent = fmtTime(elapsedMins());
+  document.getElementById('sos-money').textContent = fmt(moneySaved());
+  document.getElementById('sos-modal').classList.add('active');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function openAddGoal() {
+  document.getElementById('goal-name').value = '';
+  document.getElementById('goal-amount').value = '';
+  document.getElementById('goal-modal').classList.add('active');
+}
+
+function saveGoal() {
+  const name = document.getElementById('goal-name').value.trim();
+  const amount = parseFloat(document.getElementById('goal-amount').value);
+  if (!name || !amount || amount <= 0) return;
+  data.goals.push({ id: Date.now(), name, amount });
+  saveData(); render(); closeModal('goal-modal');
+}
+
+function deleteGoal(id) {
+  if (!confirm('¿Eliminar esta meta?')) return;
+  data.goals = data.goals.filter(g => g.id !== id);
+  saveData(); render();
+}
+
+function openSettings() {
+  document.getElementById('set-cigs').value = data.cigsPerDay;
+  document.getElementById('set-perpack').value = data.cigsPerPack;
+  document.getElementById('set-price').value = data.pricePerPack;
+  const d = new Date(data.startTime);
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  document.getElementById('set-start').value = d.toISOString().slice(0,16);
+  document.getElementById('settings-modal').classList.add('active');
+}
+
+function saveSettings() {
+  data.cigsPerDay = parseFloat(document.getElementById('set-cigs').value) || data.cigsPerDay;
+  data.cigsPerPack = parseFloat(document.getElementById('set-perpack').value) || data.cigsPerPack;
+  data.pricePerPack = parseFloat(document.getElementById('set-price').value) || data.pricePerPack;
+  const v = document.getElementById('set-start').value;
+  if (v) data.startTime = new Date(v).getTime();
+  saveData(); render(); closeModal('settings-modal');
+}
+
+function confirmRelapse() {
+  if (!confirm('¿Has recaído?\nEsto reinicia el contador a 0.\n\nNo pasa nada — lo importante es volver a empezar.')) return;
+  data.startTime = Date.now();
+  saveData(); render();
+}
+
+function resetAll() {
+  if (!confirm('¿Borrar TODOS los datos?\n\nEsto no se puede deshacer.')) return;
+  localStorage.removeItem('quitSmokingData');
+  data = { ...DEFAULT_DATA };
+  closeModal('settings-modal');
+  init();
+}
+
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
+});
+
+init();
+</script>
+</body>
+</html>
