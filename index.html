@@ -563,6 +563,35 @@ button.btn-danger:hover {
 .empty p { font-size: 15px; color: var(--ink-soft); line-height: 1.65; max-width: 380px; }
 .empty .btn-primary { max-width: 300px; padding: 18px; font-size: 17px; }
 
+/* ── Level badge ── */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 99px;
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.25);
+  color: var(--accent-hi);
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-top: 6px;
+  transition: all 400ms ease;
+}
+
+/* ── Taxímetro: pulso al subir céntimo ── */
+@keyframes money-tick {
+  0%   { transform: scale(1);    filter: brightness(1); }
+  30%  { transform: scale(1.04); filter: brightness(1.35); }
+  100% { transform: scale(1);    filter: brightness(1); }
+}
+.money-tick {
+  animation: money-tick 400ms cubic-bezier(0.34,1.56,0.64,1);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -595,6 +624,7 @@ button.btn-danger:hover {
 
     <div class="header">
       <h1>Mi camino sin tabaco</h1>
+      <span id="level-badge" class="level-badge"></span>
       <button class="settings-btn" onclick="openSettings()">⚙️</button>
     </div>
 
@@ -751,8 +781,48 @@ const QUOTES = [
   "Mil cigarrillos no fumados empiezan por uno.",
   "No fumes. Ahorra. Vive.",
   "La racha que ves ahí arriba la has ganado tú solo.",
-  "En 3 minutos el antojo habrá pasado. En 3 meses notarás la diferencia."
+  "En 3 minutos el antojo habrá pasado. En 3 meses notarás la diferencia.",
+  "Un cigarrillo no es una recompensa. Es un retroceso.",
+  "Bebe un vaso de agua. Ahora mismo. El antojo pasará antes de que lo termines.",
+  "Piensa en alguien a quien quieras. Esto también lo haces por ellos.",
+  "El tabaco no te relaja. Alivia la ansiedad que él mismo provoca.",
+  "Cada vez que dices no, el siguiente no es más fácil.",
+  "Sal a dar 5 pasos. Solo 5. El antojo no te seguirá.",
+  "Tu cuerpo lleva días trabajando para recuperarse. No lo hagas empezar de cero.",
+  "No eres un fumador intentando dejarlo. Eres una persona libre que no fuma.",
+  "El dinero que no gastas en tabaco es tuyo. No del estanco.",
+  "Cuenta hasta 60. Cuando llegues, el antojo habrá bajado.",
+  "Lo más difícil ya lo hiciste: empezar. Ahora solo tienes que seguir.",
+  "Un antojo es solo una ola. Las olas pasan.",
+  "Dentro de una hora te alegrarás de no haber fumado ahora.",
+  "La nicotina miente. Te dice que la necesitas. No es verdad.",
+  "Cada día sin fumar es un día que has ganado, no perdido.",
+  "Llama a alguien. Una conversación de 5 minutos vale más que un cigarrillo."
 ];
+
+let lastQuoteIndex = -1;
+
+const LEVELS = [
+  { days: 0,   icon: '🌱', name: 'Semilla',  next: 7   },
+  { days: 7,   icon: '🌿', name: 'Brote',    next: 30  },
+  { days: 30,  icon: '🌳', name: 'Árbol',    next: 90  },
+  { days: 90,  icon: '🌲', name: 'Bosque',   next: 365 },
+  { days: 365, icon: '🌴', name: 'Selva',    next: null },
+];
+
+function getLevel(days) {
+  let level = LEVELS[0];
+  for (const l of LEVELS) { if (days >= l.days) level = l; }
+  return level;
+}
+
+function renderLevel(days) {
+  const level = getLevel(days);
+  const badge = document.getElementById('level-badge');
+  if (!badge) return;
+  const nextText = level.next ? ` · ${level.next - days}d para ${LEVELS[LEVELS.indexOf(level)+1].icon}` : ' · ¡Nivel máximo!';
+  badge.textContent = `${level.icon} ${level.name}${nextText}`;
+}
 
 const HEALTH = [
   { mins: 20,           icon: "💓", desc: "Tu pulso y presión vuelven a la normalidad" },
@@ -790,7 +860,9 @@ function init() {
     document.getElementById('main-screen').style.display = 'block';
     document.getElementById('sos-btn').style.display = 'block';
     render();
+    fastRender();
     setInterval(render, 1000);
+    setInterval(fastRender, 100);
   }
 }
 
@@ -842,23 +914,47 @@ function fmtMilestone(mins) {
   return `${Math.round(d/365)} año${d>=730?'s':''}`;
 }
 
+// Render rápido: solo tiempo y dinero, cada 100ms
+let _lastCents = -1;
+function fastRender() {
+  if (!data.startTime) return;
+  const mins = elapsedMins();
+  const money = moneySaved();
+
+  // Tiempo — siempre con segundos visibles
+  document.getElementById('time-display').textContent = fmtTime(mins);
+
+  // Dinero — 4 decimales para que siempre esté moviéndose
+  const moneyEl = document.getElementById('money-display');
+  const formatted = money.toLocaleString('es-ES', { minimumFractionDigits:4, maximumFractionDigits:4 }) + ' €';
+  moneyEl.textContent = formatted;
+
+  // Pulso visual cuando sube el céntimo
+  const cents = Math.floor(money * 100);
+  if (cents !== _lastCents && _lastCents !== -1) {
+    moneyEl.classList.remove('money-tick');
+    void moneyEl.offsetWidth; // reflow para reiniciar animación
+    moneyEl.classList.add('money-tick');
+  }
+  _lastCents = cents;
+}
+
 function render() {
   const mins = elapsedMins();
   const money = moneySaved();
   const cigs = Math.floor(mins * data.cigsPerDay / (24*60));
   const days = Math.floor(mins / (24*60));
 
-  document.getElementById('time-display').textContent = fmtTime(mins);
   const d = new Date(data.startTime);
   document.getElementById('time-sub').textContent = 'desde ' + d.toLocaleDateString('es-ES', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' });
 
-  document.getElementById('money-display').textContent = fmt(money);
   const perDay = (data.cigsPerDay / data.cigsPerPack) * data.pricePerPack;
   document.getElementById('money-sub').textContent = `+ ${fmt(perDay)} cada día · ${fmt(perDay*30)} al mes`;
 
   document.getElementById('cigs-display').textContent = cigs.toLocaleString('es-ES');
   document.getElementById('streak-display').textContent = days;
 
+  renderLevel(days);
   renderGoals(money);
   renderHealth(mins);
   renderCalendar(mins);
@@ -917,7 +1013,10 @@ function renderCalendar(mins) {
 function esc(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function openSOS() {
-  document.getElementById('sos-quote').textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  let idx;
+  do { idx = Math.floor(Math.random()*QUOTES.length); } while (idx === lastQuoteIndex);
+  lastQuoteIndex = idx;
+  document.getElementById('sos-quote').textContent = QUOTES[idx];
   document.getElementById('sos-time').textContent = fmtTime(elapsedMins());
   document.getElementById('sos-money').textContent = fmt(moneySaved());
   document.getElementById('sos-modal').classList.add('active');
