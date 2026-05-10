@@ -30,7 +30,7 @@
   --danger-hi: #f87171;
 }
 
-/* ── Liquid background ── */
+/* ‚îÄ‚îÄ Liquid background ‚îÄ‚îÄ */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
   color: var(--ink);
@@ -46,7 +46,7 @@ body {
 
 .container { max-width: 680px; margin: 0 auto; }
 
-/* ── Glass surfaces ── */
+/* ‚îÄ‚îÄ Glass surfaces ‚îÄ‚îÄ */
 .glass {
   background: rgba(236, 255, 245, 0.05);
   backdrop-filter: blur(24px) saturate(180%);
@@ -63,7 +63,7 @@ body {
   box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(236,255,245,0.14);
 }
 
-/* ── Liquid lift animations ── */
+/* ‚îÄ‚îÄ Liquid lift animations ‚îÄ‚îÄ */
 .lg-lift {
   transition: transform 230ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 230ms ease, border-color 180ms ease, background 180ms ease;
   will-change: transform;
@@ -103,7 +103,7 @@ body {
   box-shadow: 0 0 0 1px rgba(236,255,245,0.16), 0 24px 64px rgba(0,0,0,0.55), 0 10px 28px rgba(0,0,0,0.32), inset 0 1.5px 0 rgba(236,255,245,0.2) !important;
 }
 
-/* ── Header ── */
+/* ‚îÄ‚îÄ Header ‚îÄ‚îÄ */
 .header {
   text-align: center;
   margin-bottom: 28px;
@@ -138,7 +138,7 @@ body {
   border-color: var(--line-strong);
 }
 
-/* ── Hero card ── */
+/* ‚îÄ‚îÄ Hero card ‚îÄ‚îÄ */
 .hero {
   border-radius: var(--radius);
   padding: 28px 24px;
@@ -172,7 +172,7 @@ body {
   margin-top: 8px;
 }
 
-/* ── Money card ── */
+/* ‚îÄ‚îÄ Money card ‚îÄ‚îÄ */
 .money-card {
   border-radius: var(--radius);
   padding: 24px;
@@ -209,14 +209,14 @@ body {
   margin-top: 6px;
 }
 
-/* ── Stats grid ── */
+/* ‚îÄ‚îÄ Stats grid ‚îÄ‚îÄ */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 .stat-card {
   border-radius: var(--radius-sm);
   padding: 18px 16px;
 }
 
-/* ── Racha en llamas ── */
+/* ‚îÄ‚îÄ Racha en llamas ‚îÄ‚îÄ */
 @keyframes fire-pulse {
   0%, 100% { box-shadow: 0 0 18px rgba(251,146,60,0.25), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.15); }
   50%       { box-shadow: 0 0 32px rgba(251,146,60,0.45), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.25); }
@@ -281,7 +281,7 @@ body {
   font-weight: 600;
 }
 
-/* ── Section card ── */
+/* ‚îÄ‚îÄ Section card ‚îÄ‚îÄ */
 .section-card {
   border-radius: var(--radius);
   padding: 22px 20px;
@@ -296,7 +296,7 @@ body {
   margin-bottom: 16px;
 }
 
-/* ── Goals ── */
+/* ‚îÄ‚îÄ Goals ‚îÄ‚îÄ */
 .goals { display: flex; flex-direction: column; gap: 12px; }
 .goal {
   padding: 14px 16px;
@@ -331,7 +331,7 @@ body {
 }
 .goal-delete:hover { opacity: 1; color: var(--danger); }
 
-/* ── Add goal button ── */
+/* ‚îÄ‚îÄ Add goal button ‚îÄ‚îÄ */
 .add-goal-btn {
   width: 100%;
   margin-top: 14px;
@@ -355,7 +355,7 @@ body {
   background: rgba(16,185,129,0.06);
 }
 
-/* ── Health milestones ── */
+/* ‚îÄ‚îÄ Health milestones ‚îÄ‚îÄ */
 .health-list { display: flex; flex-direction: column; gap: 10px; }
 .health-item {
   display: flex;
@@ -390,7 +390,74 @@ body {
 .health-desc { font-size: 13px; margin-top: 2px; color: var(--ink-soft); }
 .health-item.unlocked .health-desc { color: var(--ink); font-weight: 500; }
 
-/* ── Calendar ── */
+/* ‚îÄ‚îÄ Body diagram ‚îÄ‚îÄ */
+.body-wrap { display: flex; gap: 16px; align-items: flex-start; }
+.body-svg-col { flex-shrink: 0; width: 110px; }
+.body-svg-col svg { display: block; overflow: visible; }
+.body-list-col { flex: 1; display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+.body-shape {
+  fill: rgba(236,255,245,0.04);
+  stroke: rgba(236,255,245,0.09);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.organ-glow {
+  opacity: 0;
+  transition: opacity 0.8s ease, fill 0.8s ease;
+}
+.organ-bg {
+  fill: rgba(236,255,245,0.07);
+  stroke: rgba(236,255,245,0.18);
+  stroke-width: 1.5;
+  transition: fill 0.8s ease, stroke 0.8s ease;
+}
+[data-state="partial"] .organ-glow { opacity: 0.85; fill: rgba(16,185,129,0.2); }
+[data-state="full"]    .organ-glow { opacity: 1;    fill: rgba(16,185,129,0.3); }
+[data-state="partial"] .organ-bg   { fill: rgba(16,185,129,0.22); stroke: rgba(52,211,153,0.55); }
+[data-state="full"]    .organ-bg   { fill: rgba(16,185,129,0.38); stroke: rgba(52,211,153,0.8); }
+
+@keyframes organ-breathe {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 0.25; }
+}
+[data-state="partial"] .organ-glow,
+[data-state="full"]    .organ-glow {
+  animation: organ-breathe 2.6s ease-in-out infinite;
+}
+
+.body-health-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(236,255,245,0.03);
+  border: 1px solid rgba(236,255,245,0.07);
+  transition: background 300ms, border-color 300ms;
+}
+.body-health-item.unlocked {
+  background: rgba(16,185,129,0.08);
+  border-color: rgba(52,211,153,0.22);
+}
+.body-h-icon {
+  font-size: 13px; flex-shrink: 0;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(236,255,245,0.06);
+  border: 1px solid rgba(236,255,245,0.1);
+  transition: background 300ms, border-color 300ms;
+}
+.body-health-item.unlocked .body-h-icon {
+  background: rgba(16,185,129,0.22);
+  border-color: rgba(52,211,153,0.4);
+}
+.body-h-text { flex: 1; min-width: 0; }
+.body-h-time { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.body-h-desc { font-size: 11px; color: var(--ink-soft); margin-top: 1px; line-height: 1.35; }
+.body-health-item.unlocked .body-h-desc { color: var(--ink); font-weight: 500; }
+
+/* ‚îÄ‚îÄ Calendar ‚îÄ‚îÄ */
 .calendar { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; }
 .day {
   aspect-ratio: 1;
@@ -407,7 +474,7 @@ body {
 .day.partial { background: rgba(16,185,129,0.4); }
 .day.today { border: 1.5px solid var(--accent-hi); }
 
-/* ── Relapse button ── */
+/* ‚îÄ‚îÄ Relapse button ‚îÄ‚îÄ */
 .relapse-btn {
   width: 100%;
   padding: 12px;
@@ -427,7 +494,7 @@ body {
   color: var(--gold);
 }
 
-/* ── SOS button ── */
+/* ‚îÄ‚îÄ SOS button ‚îÄ‚îÄ */
 .sos-btn {
   position: fixed;
   bottom: 22px; left: 50%;
@@ -455,7 +522,7 @@ body {
   transition-duration: 80ms !important;
 }
 
-/* ── Buttons ── */
+/* ‚îÄ‚îÄ Buttons ‚îÄ‚îÄ */
 button.btn-primary, button.btn-secondary, button.btn-danger {
   font-family: inherit;
   font-size: 15px;
@@ -512,7 +579,7 @@ button.btn-danger:hover {
   box-shadow: 0 14px 36px rgba(239,68,68,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
-/* ── Modal ── */
+/* ‚îÄ‚îÄ Modal ‚îÄ‚îÄ */
 .modal {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.7);
@@ -566,7 +633,7 @@ button.btn-danger:hover {
 .modal p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px; }
 .btn-row { display: flex; gap: 10px; margin-top: 18px; }
 
-/* ── Inputs ── */
+/* ‚îÄ‚îÄ Inputs ‚îÄ‚îÄ */
 .input-group { margin-bottom: 14px; }
 .input-group label {
   display: block;
@@ -597,7 +664,7 @@ button.btn-danger:hover {
   box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
 }
 
-/* ── Empty / setup screen ── */
+/* ‚îÄ‚îÄ Empty / setup screen ‚îÄ‚îÄ */
 .empty {
   min-height: 100vh;
   display: flex;
@@ -613,7 +680,7 @@ button.btn-danger:hover {
 .empty p { font-size: 15px; color: var(--ink-soft); line-height: 1.65; max-width: 380px; }
 .empty .btn-primary { max-width: 300px; padding: 18px; font-size: 17px; }
 
-/* ── Level badge ── */
+/* ‚îÄ‚îÄ Level badge ‚îÄ‚îÄ */
 .level-badge {
   display: inline-flex;
   align-items: center;
@@ -632,7 +699,7 @@ button.btn-danger:hover {
   transition: all 400ms ease;
 }
 
-/* ── Taxímetro: pulso al subir céntimo ── */
+/* ‚îÄ‚îÄ Tax√≠metro: pulso al subir c√©ntimo ‚îÄ‚îÄ */
 @keyframes money-tick {
   0%   { transform: scale(1);    filter: brightness(1); }
   30%  { transform: scale(1.04); filter: brightness(1.35); }
@@ -642,7 +709,7 @@ button.btn-danger:hover {
   animation: money-tick 400ms cubic-bezier(0.34,1.56,0.64,1);
 }
 
-/* ── Scrollbar ── */
+/* ‚îÄ‚îÄ Scrollbar ‚îÄ‚îÄ */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(236,255,245,0.12); border-radius: 3px; }
@@ -661,11 +728,11 @@ button.btn-danger:hover {
 
   <!-- Setup screen -->
   <div id="setup-screen" class="empty" style="display:none;">
-    <div class="empty-icon">🚭</div>
+    <div class="empty-icon">üö≠</div>
     <h2>Vamos a empezar</h2>
-    <p>Pulsa el botón cuando hagas el último cigarrillo. Empezaremos a contar desde ese momento exacto.</p>
-    <p style="font-size:13px; color:var(--muted);">¿Ya llevas un rato? Usa "Personalizar" para poner la hora real.</p>
-    <button class="btn-primary lg-lift" onclick="startNow()" style="width:100%; max-width:300px; padding:18px; font-size:17px;">Empezar ahora 🚀</button>
+    <p>Pulsa el bot√≥n cuando hagas el √∫ltimo cigarrillo. Empezaremos a contar desde ese momento exacto.</p>
+    <p style="font-size:13px; color:var(--muted);">¬øYa llevas un rato? Usa "Personalizar" para poner la hora real.</p>
+    <button class="btn-primary lg-lift" onclick="startNow()" style="width:100%; max-width:300px; padding:18px; font-size:17px;">Empezar ahora üöÄ</button>
     <button class="btn-secondary lg-lift-sm" onclick="showCustomStart()" style="width:100%; max-width:300px; padding:14px; margin-top:4px;">Personalizar fecha/hora</button>
   </div>
 
@@ -675,7 +742,7 @@ button.btn-danger:hover {
     <div class="header">
       <h1>Mi camino sin tabaco</h1>
       <span id="level-badge" class="level-badge"></span>
-      <button class="settings-btn" onclick="openSettings()">⚙️</button>
+      <button class="settings-btn" onclick="openSettings()">‚öôÔ∏è</button>
     </div>
 
     <div class="hero">
@@ -685,58 +752,123 @@ button.btn-danger:hover {
     </div>
 
     <div class="money-card lg-lift-card">
-      <div class="money-label">💰 Has ahorrado</div>
-      <div class="money-amount" id="money-display">0,00 €</div>
+      <div class="money-label">üí∞ Has ahorrado</div>
+      <div class="money-amount" id="money-display">0,00 ‚Ç¨</div>
       <div class="money-sub" id="money-sub">cargando...</div>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card glass lg-lift-card">
         <div class="stat-value" id="cigs-display">0</div>
-        <div class="stat-label">🚬 No fumados</div>
+        <div class="stat-label">üö¨ No fumados</div>
       </div>
       <div class="stat-card glass lg-lift-card streak-card" id="streak-card">
         <div class="stat-value" id="streak-display">0</div>
-        <div class="stat-label"><span class="streak-fire-icon">🔥</span> Días seguidos</div>
+        <div class="stat-label"><span class="streak-fire-icon">üî•</span> D√≠as seguidos</div>
       </div>
     </div>
 
     <div class="section-card glass">
-      <div class="section-title">🎯 Tus metas de ahorro</div>
+      <div class="section-title">üéØ Tus metas de ahorro</div>
       <div id="goals-list" class="goals"></div>
-      <button class="add-goal-btn" onclick="openAddGoal()">+ Añadir meta</button>
+      <button class="add-goal-btn" onclick="openAddGoal()">+ A√±adir meta</button>
     </div>
 
     <div class="section-card glass">
-      <div class="section-title">❤️ Tu salud mejora</div>
-      <div id="health-list" class="health-list"></div>
+      <div class="section-title">‚ù§Ô∏è Tu cuerpo se recupera</div>
+      <div class="body-wrap">
+        <div class="body-svg-col">
+          <svg viewBox="0 0 110 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="og" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="4" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Head -->
+            <circle cx="55" cy="19" r="16" class="body-shape"/>
+            <!-- Torso -->
+            <path d="M 22 34 Q 14 44 12 66 L 10 153 Q 10 162 19 162 L 91 162 Q 100 162 100 153 L 98 66 Q 96 44 88 34 Z" class="body-shape"/>
+            <!-- Left arm -->
+            <path d="M 14 60 Q 0 80 -2 120 Q -3 133 6 135 Q 15 137 17 124 Q 21 96 28 70" class="body-shape"/>
+            <!-- Right arm -->
+            <path d="M 96 60 Q 110 80 112 120 Q 113 133 104 135 Q 95 137 93 124 Q 89 96 82 70" class="body-shape"/>
+            <!-- Left leg -->
+            <path d="M 33 162 Q 27 208 24 246 Q 22 259 30 261 Q 38 263 42 250 Q 47 220 49 180 L 51 162" class="body-shape"/>
+            <!-- Right leg -->
+            <path d="M 59 162 L 61 180 Q 63 220 68 250 Q 72 263 80 261 Q 88 259 86 246 Q 83 208 77 162" class="body-shape"/>
+
+            <!-- üß† Cerebro (5y, 10y) -->
+            <g id="org-brain" data-state="locked">
+              <circle class="organ-glow" cx="55" cy="12" r="14" filter="url(#og)"/>
+              <circle class="organ-bg"   cx="55" cy="12" r="9"/>
+              <text x="55" y="16" text-anchor="middle" font-size="10">üß†</text>
+            </g>
+            <!-- üëÉ Sentidos (48h) -->
+            <g id="org-senses" data-state="locked">
+              <circle class="organ-glow" cx="55" cy="27" r="10" filter="url(#og)"/>
+              <circle class="organ-bg"   cx="55" cy="27" r="6.5"/>
+              <text x="55" y="31" text-anchor="middle" font-size="8">üëÉ</text>
+            </g>
+            <!-- ‚ù§Ô∏è Coraz√≥n (20min, 24h, 1y) -->
+            <g id="org-heart" data-state="locked">
+              <circle class="organ-glow" cx="45" cy="91" r="14" filter="url(#og)"/>
+              <circle class="organ-bg"   cx="45" cy="91" r="9"/>
+              <text x="45" y="95" text-anchor="middle" font-size="11">‚ù§Ô∏è</text>
+            </g>
+            <!-- ü´Å Pulmones (72h, 30d, 90d, 270d, 10y) -->
+            <g id="org-lungs" data-state="locked">
+              <ellipse class="organ-glow" cx="30" cy="87" rx="14" ry="18" filter="url(#og)"/>
+              <ellipse class="organ-glow" cx="80" cy="87" rx="14" ry="18" filter="url(#og)"/>
+              <ellipse class="organ-bg"   cx="30" cy="87" rx="9"  ry="12"/>
+              <ellipse class="organ-bg"   cx="80" cy="87" rx="9"  ry="12"/>
+              <text x="30" y="91" text-anchor="middle" font-size="10">ü´Å</text>
+            </g>
+            <!-- ü©∏ Sangre CO (8h) ‚Äî brazo izquierdo -->
+            <g id="org-blood" data-state="locked">
+              <circle class="organ-glow" cx="4"  cy="108" r="10" filter="url(#og)"/>
+              <circle class="organ-bg"   cx="4"  cy="108" r="6.5"/>
+              <text x="4" y="112" text-anchor="middle" font-size="8">ü©∏</text>
+            </g>
+            <!-- üèÉ Circulaci√≥n (14d) -->
+            <g id="org-legs" data-state="locked">
+              <circle class="organ-glow" cx="36" cy="218" r="12" filter="url(#og)"/>
+              <circle class="organ-bg"   cx="36" cy="218" r="7.5"/>
+              <text x="36" y="222" text-anchor="middle" font-size="9">üèÉ</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body-list-col" id="body-health-list">
+          <!-- Filled by JS -->
+        </div>
+      </div>
     </div>
 
     <div class="section-card glass">
-      <div class="section-title">📅 Tu racha</div>
+      <div class="section-title">üìÖ Tu racha</div>
       <div id="calendar" class="calendar"></div>
     </div>
 
-    <button class="relapse-btn" onclick="confirmRelapse()">He recaído — reiniciar contador</button>
+    <button class="relapse-btn" onclick="confirmRelapse()">He reca√≠do ‚Äî reiniciar contador</button>
 
   </div>
 </div>
 
-<button class="sos-btn" onclick="openSOS()" id="sos-btn" style="display:none;">🆘 ANTOJO</button>
+<button class="sos-btn" onclick="openSOS()" id="sos-btn" style="display:none;">üÜò ANTOJO</button>
 
 <!-- SOS Modal -->
 <div class="modal" id="sos-modal">
   <div class="modal-content">
     <h2>Respira. Vas a poder.</h2>
-    <div class="modal-quote" id="sos-quote">—</div>
+    <div class="modal-quote" id="sos-quote">‚Äî</div>
     <div class="modal-stats">
       Llevas <strong id="sos-time">0</strong> sin fumar<br>
-      Has ahorrado <strong id="sos-money">0 €</strong><br>
+      Has ahorrado <strong id="sos-money">0 ‚Ç¨</strong><br>
       <span style="font-size:12px; color:var(--muted);">Si fumas ahora, pierdes esta racha.</span>
     </div>
-    <p style="text-align:center;">El antojo dura 3-5 minutos. Bebe agua, sal a andar, llama a alguien. Pasará.</p>
+    <p style="text-align:center;">El antojo dura 3-5 minutos. Bebe agua, sal a andar, llama a alguien. Pasar√°.</p>
     <div class="btn-row">
-      <button class="btn-primary" onclick="closeModal('sos-modal')">¡Aguanto! 💪</button>
+      <button class="btn-primary" onclick="closeModal('sos-modal')">¬°Aguanto! üí™</button>
     </div>
   </div>
 </div>
@@ -746,16 +878,16 @@ button.btn-danger:hover {
   <div class="modal-content">
     <h2>Nueva meta de ahorro</h2>
     <div class="input-group">
-      <label>¿Para qué quieres ahorrar?</label>
+      <label>¬øPara qu√© quieres ahorrar?</label>
       <input type="text" id="goal-name" placeholder="Ej: Escapada fin de semana">
     </div>
     <div class="input-group">
-      <label>Importe (€)</label>
+      <label>Importe (‚Ç¨)</label>
       <input type="number" id="goal-amount" placeholder="300" inputmode="decimal">
     </div>
     <div class="btn-row">
       <button class="btn-secondary" onclick="closeModal('goal-modal')">Cancelar</button>
-      <button class="btn-primary" onclick="saveGoal()">Añadir</button>
+      <button class="btn-primary" onclick="saveGoal()">A√±adir</button>
     </div>
   </div>
 </div>
@@ -763,9 +895,9 @@ button.btn-danger:hover {
 <!-- Settings modal -->
 <div class="modal" id="settings-modal">
   <div class="modal-content">
-    <h2>⚙️ Ajustes</h2>
+    <h2>‚öôÔ∏è Ajustes</h2>
     <div class="input-group">
-      <label>Cigarrillos al día</label>
+      <label>Cigarrillos al d√≠a</label>
       <input type="number" id="set-cigs" inputmode="decimal">
     </div>
     <div class="input-group">
@@ -773,7 +905,7 @@ button.btn-danger:hover {
       <input type="number" id="set-perpack" inputmode="decimal">
     </div>
     <div class="input-group">
-      <label>Precio del paquete (€)</label>
+      <label>Precio del paquete (‚Ç¨)</label>
       <input type="number" id="set-price" step="0.01" inputmode="decimal">
     </div>
     <div class="input-group">
@@ -791,7 +923,7 @@ button.btn-danger:hover {
 <!-- Custom start modal -->
 <div class="modal" id="custom-start-modal">
   <div class="modal-content">
-    <h2>¿Cuándo fue tu último cigarrillo?</h2>
+    <h2>¬øCu√°ndo fue tu √∫ltimo cigarrillo?</h2>
     <div class="input-group">
       <label>Fecha y hora</label>
       <input type="datetime-local" id="custom-start-input">
@@ -812,52 +944,52 @@ const DEFAULT_DATA = {
   goals: [
     { id: 1, name: "Pagar Claude Max este mes", amount: 100 },
     { id: 2, name: "Un mes entero sin fumar", amount: 197 },
-    { id: 3, name: "Un año de Claude Max pagado", amount: 1200 },
-    { id: 4, name: "Ahorro a 1 año completo", amount: 2400 }
+    { id: 3, name: "Un a√±o de Claude Max pagado", amount: 1200 },
+    { id: 4, name: "Ahorro a 1 a√±o completo", amount: 2400 }
   ]
 };
 
 const QUOTES = [
-  "Cada minuto que aguantas, tu cuerpo se está curando.",
+  "Cada minuto que aguantas, tu cuerpo se est√° curando.",
   "El antojo dura 3 minutos. Tu salud dura toda la vida.",
-  "No estás dejando algo. Estás recuperando algo.",
-  "Eres más fuerte que un cigarrillo.",
-  "Tu yo del futuro te está mirando. Hazle sentir orgulloso.",
+  "No est√°s dejando algo. Est√°s recuperando algo.",
+  "Eres m√°s fuerte que un cigarrillo.",
+  "Tu yo del futuro te est√° mirando. Hazle sentir orgulloso.",
   "Cada euro ahorrado es un voto por tu vida.",
   "El tabaco promete calma y entrega ansiedad.",
-  "Has llegado hasta aquí. No lo tires por 5 minutos.",
-  "Respira hondo. Eso es lo único que necesitas ahora.",
+  "Has llegado hasta aqu√≠. No lo tires por 5 minutos.",
+  "Respira hondo. Eso es lo √∫nico que necesitas ahora.",
   "El cigarro te roba tiempo, dinero y salud. Hoy no le das nada.",
   "Mil cigarrillos no fumados empiezan por uno.",
   "No fumes. Ahorra. Vive.",
-  "La racha que ves ahí arriba la has ganado tú solo.",
-  "En 3 minutos el antojo habrá pasado. En 3 meses notarás la diferencia.",
+  "La racha que ves ah√≠ arriba la has ganado t√∫ solo.",
+  "En 3 minutos el antojo habr√° pasado. En 3 meses notar√°s la diferencia.",
   "Un cigarrillo no es una recompensa. Es un retroceso.",
-  "Bebe un vaso de agua. Ahora mismo. El antojo pasará antes de que lo termines.",
-  "Piensa en alguien a quien quieras. Esto también lo haces por ellos.",
-  "El tabaco no te relaja. Alivia la ansiedad que él mismo provoca.",
-  "Cada vez que dices no, el siguiente no es más fácil.",
-  "Sal a dar 5 pasos. Solo 5. El antojo no te seguirá.",
-  "Tu cuerpo lleva días trabajando para recuperarse. No lo hagas empezar de cero.",
+  "Bebe un vaso de agua. Ahora mismo. El antojo pasar√° antes de que lo termines.",
+  "Piensa en alguien a quien quieras. Esto tambi√©n lo haces por ellos.",
+  "El tabaco no te relaja. Alivia la ansiedad que √©l mismo provoca.",
+  "Cada vez que dices no, el siguiente no es m√°s f√°cil.",
+  "Sal a dar 5 pasos. Solo 5. El antojo no te seguir√°.",
+  "Tu cuerpo lleva d√≠as trabajando para recuperarse. No lo hagas empezar de cero.",
   "No eres un fumador intentando dejarlo. Eres una persona libre que no fuma.",
   "El dinero que no gastas en tabaco es tuyo. No del estanco.",
-  "Cuenta hasta 60. Cuando llegues, el antojo habrá bajado.",
-  "Lo más difícil ya lo hiciste: empezar. Ahora solo tienes que seguir.",
+  "Cuenta hasta 60. Cuando llegues, el antojo habr√° bajado.",
+  "Lo m√°s dif√≠cil ya lo hiciste: empezar. Ahora solo tienes que seguir.",
   "Un antojo es solo una ola. Las olas pasan.",
-  "Dentro de una hora te alegrarás de no haber fumado ahora.",
+  "Dentro de una hora te alegrar√°s de no haber fumado ahora.",
   "La nicotina miente. Te dice que la necesitas. No es verdad.",
-  "Cada día sin fumar es un día que has ganado, no perdido.",
-  "Llama a alguien. Una conversación de 5 minutos vale más que un cigarrillo."
+  "Cada d√≠a sin fumar es un d√≠a que has ganado, no perdido.",
+  "Llama a alguien. Una conversaci√≥n de 5 minutos vale m√°s que un cigarrillo."
 ];
 
 let lastQuoteIndex = -1;
 
 const LEVELS = [
-  { days: 0,   icon: '🌱', name: 'Semilla',  next: 7   },
-  { days: 7,   icon: '🌿', name: 'Brote',    next: 30  },
-  { days: 30,  icon: '🌳', name: 'Árbol',    next: 90  },
-  { days: 90,  icon: '🌲', name: 'Bosque',   next: 365 },
-  { days: 365, icon: '🌴', name: 'Selva',    next: null },
+  { days: 0,   icon: 'üå±', name: 'Semilla',  next: 7   },
+  { days: 7,   icon: 'üåø', name: 'Brote',    next: 30  },
+  { days: 30,  icon: 'üå≥', name: '√Årbol',    next: 90  },
+  { days: 90,  icon: 'üå≤', name: 'Bosque',   next: 365 },
+  { days: 365, icon: 'üå¥', name: 'Selva',    next: null },
 ];
 
 function getLevel(days) {
@@ -870,23 +1002,32 @@ function renderLevel(days) {
   const level = getLevel(days);
   const badge = document.getElementById('level-badge');
   if (!badge) return;
-  const nextText = level.next ? ` · ${level.next - days}d para ${LEVELS[LEVELS.indexOf(level)+1].icon}` : ' · ¡Nivel máximo!';
+  const nextText = level.next ? ` ¬∑ ${level.next - days}d para ${LEVELS[LEVELS.indexOf(level)+1].icon}` : ' ¬∑ ¬°Nivel m√°ximo!';
   badge.textContent = `${level.icon} ${level.name}${nextText}`;
 }
 
 const HEALTH = [
-  { mins: 20,           icon: "💓", desc: "Tu pulso y presión vuelven a la normalidad" },
-  { mins: 60*8,         icon: "🩸", desc: "Bajan los niveles de CO en sangre" },
-  { mins: 60*24,        icon: "❤️", desc: "Disminuye el riesgo de infarto" },
-  { mins: 60*48,        icon: "👅", desc: "Recuperas gusto y olfato" },
-  { mins: 60*72,        icon: "🫁", desc: "Respiras mejor — los bronquios se relajan" },
-  { mins: 60*24*14,     icon: "🏃", desc: "Mejora la circulación y capacidad pulmonar" },
-  { mins: 60*24*30,     icon: "😮‍💨", desc: "Menos tos, menos congestión, más energía" },
-  { mins: 60*24*90,     icon: "💪", desc: "Función pulmonar hasta un 30% mejor" },
-  { mins: 60*24*270,    icon: "✨", desc: "Casi sin tos ni problemas respiratorios" },
-  { mins: 60*24*365,    icon: "🎉", desc: "Tu riesgo cardiovascular cae a la mitad" },
-  { mins: 60*24*365*5,  icon: "🛡️", desc: "Riesgo de ictus igual al de un no fumador" },
-  { mins: 60*24*365*10, icon: "🏆", desc: "Riesgo de cáncer de pulmón cae a la mitad" }
+  { mins: 20,           icon: "üíì", desc: "Tu pulso y presi√≥n vuelven a la normalidad" },
+  { mins: 60*8,         icon: "ü©∏", desc: "Bajan los niveles de CO en sangre" },
+  { mins: 60*24,        icon: "‚ù§Ô∏è", desc: "Disminuye el riesgo de infarto" },
+  { mins: 60*48,        icon: "üëÖ", desc: "Recuperas gusto y olfato" },
+  { mins: 60*72,        icon: "ü´Å", desc: "Respiras mejor ‚Äî los bronquios se relajan" },
+  { mins: 60*24*14,     icon: "üèÉ", desc: "Mejora la circulaci√≥n y capacidad pulmonar" },
+  { mins: 60*24*30,     icon: "üòÆ‚Äçüí®", desc: "Menos tos, menos congesti√≥n, m√°s energ√≠a" },
+  { mins: 60*24*90,     icon: "üí™", desc: "Funci√≥n pulmonar hasta un 30% mejor" },
+  { mins: 60*24*270,    icon: "‚ú®", desc: "Casi sin tos ni problemas respiratorios" },
+  { mins: 60*24*365,    icon: "üéâ", desc: "Tu riesgo cardiovascular cae a la mitad" },
+  { mins: 60*24*365*5,  icon: "üõ°Ô∏è", desc: "Riesgo de ictus igual al de un no fumador" },
+  { mins: 60*24*365*10, icon: "üèÜ", desc: "Riesgo de c√°ncer de pulm√≥n cae a la mitad" }
+];
+
+const ORGANS = [
+  { id: 'org-brain',  milestoneIdxs: [10, 11] },
+  { id: 'org-senses', milestoneIdxs: [3] },
+  { id: 'org-heart',  milestoneIdxs: [0, 2, 9] },
+  { id: 'org-lungs',  milestoneIdxs: [4, 6, 7, 8, 11] },
+  { id: 'org-blood',  milestoneIdxs: [1] },
+  { id: 'org-legs',   milestoneIdxs: [5] },
 ];
 
 let data = loadData();
@@ -942,7 +1083,7 @@ function moneySaved() {
   return mins * cigsPerMin * (data.pricePerPack / data.cigsPerPack);
 }
 
-function fmt(n) { return n.toLocaleString('es-ES', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' €'; }
+function fmt(n) { return n.toLocaleString('es-ES', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' ‚Ç¨'; }
 
 function fmtTime(mins) {
   const s = Math.floor(mins * 60);
@@ -959,31 +1100,31 @@ function fmtMilestone(mins) {
   if (mins < 60) return `${mins} min`;
   if (mins < 60*24) return `${mins/60} h`;
   const d = mins/(60*24);
-  if (d < 30) return `${d} días`;
+  if (d < 30) return `${d} d√≠as`;
   if (d < 365) return `${Math.round(d/30)} meses`;
-  return `${Math.round(d/365)} año${d>=730?'s':''}`;
+  return `${Math.round(d/365)} a√±o${d>=730?'s':''}`;
 }
 
-// Render rápido: solo tiempo y dinero, cada 100ms
+// Render r√°pido: solo tiempo y dinero, cada 100ms
 let _lastCents = -1;
 function fastRender() {
   if (!data.startTime) return;
   const mins = elapsedMins();
   const money = moneySaved();
 
-  // Tiempo — siempre con segundos visibles
+  // Tiempo ‚Äî siempre con segundos visibles
   document.getElementById('time-display').textContent = fmtTime(mins);
 
-  // Dinero — 4 decimales para que siempre esté moviéndose
+  // Dinero ‚Äî 4 decimales para que siempre est√© movi√©ndose
   const moneyEl = document.getElementById('money-display');
-  const formatted = money.toLocaleString('es-ES', { minimumFractionDigits:4, maximumFractionDigits:4 }) + ' €';
+  const formatted = money.toLocaleString('es-ES', { minimumFractionDigits:4, maximumFractionDigits:4 }) + ' ‚Ç¨';
   moneyEl.textContent = formatted;
 
-  // Pulso visual cuando sube el céntimo
+  // Pulso visual cuando sube el c√©ntimo
   const cents = Math.floor(money * 100);
   if (cents !== _lastCents && _lastCents !== -1) {
     moneyEl.classList.remove('money-tick');
-    void moneyEl.offsetWidth; // reflow para reiniciar animación
+    void moneyEl.offsetWidth; // reflow para reiniciar animaci√≥n
     moneyEl.classList.add('money-tick');
   }
   _lastCents = cents;
@@ -999,7 +1140,7 @@ function render() {
   document.getElementById('time-sub').textContent = 'desde ' + d.toLocaleDateString('es-ES', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' });
 
   const perDay = (data.cigsPerDay / data.cigsPerPack) * data.pricePerPack;
-  document.getElementById('money-sub').textContent = `+ ${fmt(perDay)} cada día · ${fmt(perDay*30)} al mes`;
+  document.getElementById('money-sub').textContent = `+ ${fmt(perDay)} cada d√≠a ¬∑ ${fmt(perDay*30)} al mes`;
 
   document.getElementById('cigs-display').textContent = cigs.toLocaleString('es-ES');
   document.getElementById('streak-display').textContent = days;
@@ -1025,29 +1166,39 @@ function renderGoals(money) {
     el.className = 'goal' + (done ? ' completed' : '');
     el.innerHTML = `
       <div class="goal-header">
-        <span class="goal-name">${done ? '✅ ' : ''}${esc(g.name)}</span>
+        <span class="goal-name">${done ? '‚úÖ ' : ''}${esc(g.name)}</span>
         <span class="goal-amount">${fmt(Math.min(money,g.amount))} / ${fmt(g.amount)}</span>
-        <button class="goal-delete" onclick="deleteGoal(${g.id})">✕</button>
+        <button class="goal-delete" onclick="deleteGoal(${g.id})">‚úï</button>
       </div>
       <div class="goal-bar"><div class="goal-fill${done?' full':''}" style="width:${pct}%"></div></div>
-      <div class="goal-pct">${pct.toFixed(1)}%${done ? ' · ¡Conseguido! 🎉' : ''}</div>`;
+      <div class="goal-pct">${pct.toFixed(1)}%${done ? ' ¬∑ ¬°Conseguido! üéâ' : ''}</div>`;
     document.getElementById('goals-list').appendChild(el);
   });
 }
 
 function renderHealth(mins) {
-  document.getElementById('health-list').innerHTML = '';
+  // Update organ glow states
+  ORGANS.forEach(organ => {
+    const g = document.getElementById(organ.id);
+    if (!g) return;
+    const done = organ.milestoneIdxs.filter(i => mins >= HEALTH[i].mins).length;
+    g.setAttribute('data-state', done === 0 ? 'locked' : done === organ.milestoneIdxs.length ? 'full' : 'partial');
+  });
+  // Render health milestone list
+  const list = document.getElementById('body-health-list');
+  if (!list) return;
+  list.innerHTML = '';
   HEALTH.forEach(m => {
     const unlocked = mins >= m.mins;
     const el = document.createElement('div');
-    el.className = 'health-item' + (unlocked ? ' unlocked' : '');
+    el.className = 'body-health-item' + (unlocked ? ' unlocked' : '');
     el.innerHTML = `
-      <div class="health-icon">${unlocked ? '✓' : m.icon}</div>
-      <div class="health-text">
-        <div class="health-time">${fmtMilestone(m.mins)}</div>
-        <div class="health-desc">${m.desc}</div>
+      <div class="body-h-icon">${unlocked ? '‚úì' : m.icon}</div>
+      <div class="body-h-text">
+        <div class="body-h-time">${fmtMilestone(m.mins)}</div>
+        <div class="body-h-desc">${m.desc}</div>
       </div>`;
-    document.getElementById('health-list').appendChild(el);
+    list.appendChild(el);
   });
 }
 
@@ -1095,7 +1246,7 @@ function saveGoal() {
 }
 
 function deleteGoal(id) {
-  if (!confirm('¿Eliminar esta meta?')) return;
+  if (!confirm('¬øEliminar esta meta?')) return;
   data.goals = data.goals.filter(g => g.id !== id);
   saveData(); render();
 }
@@ -1120,13 +1271,13 @@ function saveSettings() {
 }
 
 function confirmRelapse() {
-  if (!confirm('¿Has recaído?\nEsto reinicia el contador a 0.\n\nNo pasa nada — lo importante es volver a empezar.')) return;
+  if (!confirm('¬øHas reca√≠do?\nEsto reinicia el contador a 0.\n\nNo pasa nada ‚Äî lo importante es volver a empezar.')) return;
   data.startTime = Date.now();
   saveData(); render();
 }
 
 function resetAll() {
-  if (!confirm('¿Borrar TODOS los datos?\n\nEsto no se puede deshacer.')) return;
+  if (!confirm('¬øBorrar TODOS los datos?\n\nEsto no se puede deshacer.')) return;
   localStorage.removeItem('quitSmokingData');
   data = { ...DEFAULT_DATA };
   closeModal('settings-modal');
