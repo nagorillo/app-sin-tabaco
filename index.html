@@ -215,6 +215,56 @@ body {
   border-radius: var(--radius-sm);
   padding: 18px 16px;
 }
+
+/* ── Racha en llamas ── */
+@keyframes fire-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(251,146,60,0.25), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.15); }
+  50%       { box-shadow: 0 0 32px rgba(251,146,60,0.45), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(251,146,60,0.25); }
+}
+@keyframes fire-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  40%       { transform: translateY(-4px) scale(1.2); }
+  60%       { transform: translateY(-2px) scale(1.1); }
+}
+@keyframes inferno-pulse {
+  0%, 100% { box-shadow: 0 0 28px rgba(239,68,68,0.4), 0 0 60px rgba(251,146,60,0.2), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(239,68,68,0.2); }
+  50%       { box-shadow: 0 0 44px rgba(239,68,68,0.65), 0 0 80px rgba(251,146,60,0.35), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(239,68,68,0.3); }
+}
+.streak-card.fire {
+  background: rgba(251,146,60,0.08) !important;
+  border-color: rgba(251,146,60,0.28) !important;
+  animation: fire-pulse 2s ease-in-out infinite;
+  transition: background 600ms, border-color 600ms;
+}
+.streak-card.inferno {
+  background: rgba(239,68,68,0.1) !important;
+  border-color: rgba(239,68,68,0.35) !important;
+  animation: inferno-pulse 1.6s ease-in-out infinite;
+}
+.streak-card.fire .stat-value,
+.streak-card.inferno .stat-value {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.streak-card.inferno .stat-value {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 40%, #ef4444 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.streak-fire-icon {
+  display: inline-block;
+}
+.streak-card.fire .streak-fire-icon {
+  animation: fire-bounce 1.8s ease-in-out infinite;
+  display: inline-block;
+}
+.streak-card.inferno .streak-fire-icon {
+  animation: fire-bounce 1.2s ease-in-out infinite;
+  display: inline-block;
+}
+
 .stat-value {
   font-size: 32px;
   font-weight: 800;
@@ -645,9 +695,9 @@ button.btn-danger:hover {
         <div class="stat-value" id="cigs-display">0</div>
         <div class="stat-label">🚬 No fumados</div>
       </div>
-      <div class="stat-card glass lg-lift-card">
+      <div class="stat-card glass lg-lift-card streak-card" id="streak-card">
         <div class="stat-value" id="streak-display">0</div>
-        <div class="stat-label">🔥 Días seguidos</div>
+        <div class="stat-label"><span class="streak-fire-icon">🔥</span> Días seguidos</div>
       </div>
     </div>
 
@@ -953,6 +1003,12 @@ function render() {
 
   document.getElementById('cigs-display').textContent = cigs.toLocaleString('es-ES');
   document.getElementById('streak-display').textContent = days;
+
+  // Racha en llamas
+  const streakCard = document.getElementById('streak-card');
+  streakCard.classList.remove('fire', 'inferno');
+  if (days >= 30) streakCard.classList.add('inferno');
+  else if (days >= 3) streakCard.classList.add('fire');
 
   renderLevel(days);
   renderGoals(money);
