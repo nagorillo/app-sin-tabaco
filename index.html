@@ -489,6 +489,11 @@ body {
 .body-h-desc { font-size: 11px; color: var(--ink-soft); margin-top: 1px; line-height: 1.35; }
 .body-health-item.unlocked .body-h-desc { color: var(--ink); font-weight: 500; }
 
+/* ‚îÄ‚îÄ Tree ‚îÄ‚îÄ */
+.tree-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+#tree-canvas { display: block; max-width: 100%; }
+.tree-label { font-size: 13px; color: var(--ink-soft); text-align: center; letter-spacing: 0.02em; }
+
 /* ‚îÄ‚îÄ Calendar ‚îÄ‚îÄ */
 .calendar { display: grid; grid-template-columns: repeat(15, 1fr); gap: 4px; }
 .day {
@@ -882,6 +887,14 @@ button.btn-danger:hover {
     </div>
 
     <div class="section-card glass">
+      <div class="section-title">üå≥ Tu √°rbol sin tabaco</div>
+      <div class="tree-wrap">
+        <canvas id="tree-canvas" width="220" height="190"></canvas>
+        <div class="tree-label" id="tree-label">üå± Tu semilla est√° plantada</div>
+      </div>
+    </div>
+
+    <div class="section-card glass">
       <div class="section-title">üìÖ Tu racha</div>
       <div id="calendar" class="calendar"></div>
     </div>
@@ -1193,6 +1206,7 @@ function render() {
   renderHealth(mins);
   renderCalendar(mins);
   renderBackground(days, mins);
+  renderTree(days);
 }
 
 function renderGoals(money) {
@@ -1238,6 +1252,90 @@ function renderHealth(mins) {
       </div>`;
     list.appendChild(el);
   });
+}
+
+function renderTree(days) {
+  const canvas = document.getElementById('tree-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const t = Math.min(1, days / 90);           // 0 ‚Üí 1 en 90 d√≠as
+  const depth = Math.max(1, Math.round(1 + t * 7)); // 1 ‚Üí 8 niveles
+
+  const leaves = [];
+
+  function branch(x, y, len, angle, d) {
+    if (len < 2.5 || d < 0) return;
+    const x2 = x + Math.sin(angle) * len;
+    const y2 = y - Math.cos(angle) * len;
+
+    // trunk brown ‚Üí branch green
+    const ratio = (depth - d) / Math.max(1, depth);
+    const cr = Math.round(90 - ratio * 25);
+    const cg = Math.round(50 + ratio * 60);
+    const cb = Math.round(18 + ratio * 12);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
+    ctx.lineWidth = Math.max(0.5, (d + 1) * (0.7 + t * 1.1));
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    if (d === 0) {
+      leaves.push({ x: x2, y: y2 });
+    } else {
+      const spread = 0.30 + t * 0.10;
+      const shrink = 0.65 + t * 0.03;
+      branch(x2, y2, len * shrink, angle - spread, d - 1);
+      branch(x2, y2, len * shrink, angle + spread, d - 1);
+      // extra central branch from day 14
+      if (d >= 4 && days >= 14) branch(x2, y2, len * shrink * 0.75, angle, d - 2);
+    }
+  }
+
+  branch(W / 2, H - 6, 16 + t * 52, 0, depth);
+
+  // Leaves
+  const lr = 3.5 + t * 6;
+  leaves.forEach(l => {
+    const g = ctx.createRadialGradient(l.x, l.y, 0, l.x, l.y, lr * 1.6);
+    g.addColorStop(0,   `rgba(52,211,153,${0.55 + t * 0.35})`);
+    g.addColorStop(0.6, `rgba(16,185,129,${0.28 + t * 0.25})`);
+    g.addColorStop(1,   'rgba(16,185,129,0)');
+    ctx.beginPath();
+    ctx.arc(l.x, l.y, lr * 1.6, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+  });
+
+  // Golden fruits from day 30
+  if (days >= 30) {
+    const ft = Math.min(1, (days - 30) / 60);
+    const nFruits = Math.round(leaves.length * ft * 0.45);
+    for (let i = 0; i < nFruits && i < leaves.length; i++) {
+      const l = leaves[i];
+      ctx.beginPath();
+      ctx.arc(l.x + 1.5, l.y - 1.5, 2.2 + ft * 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(251,191,36,${0.7 + ft * 0.25})`;
+      ctx.fill();
+    }
+  }
+
+  // Label
+  const labels = [
+    [0,   'üå± Tu semilla est√° plantada'],
+    [1,   'üåø Un brote de esperanza'],
+    [3,   'üå± Echando ra√≠ces'],
+    [7,   'üå≥ Tu √°rbol crece cada d√≠a'],
+    [30,  'üå≥ Un √°rbol joven y fuerte'],
+    [90,  'üå∏ Tu √°rbol florece en plenitud'],
+  ];
+  let label = labels[0][1];
+  for (const [d, txt] of labels) { if (days >= d) label = txt; }
+  document.getElementById('tree-label').textContent = label;
 }
 
 function renderBackground(days, mins) {
