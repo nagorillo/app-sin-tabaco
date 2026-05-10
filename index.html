@@ -489,6 +489,32 @@ body {
 .body-h-desc { font-size: 11px; color: var(--ink-soft); margin-top: 1px; line-height: 1.35; }
 .body-health-item.unlocked .body-h-desc { color: var(--ink); font-weight: 500; }
 
+/* ‚îÄ‚îÄ Mini widget ‚îÄ‚îÄ */
+.mini-widget {
+  position: fixed;
+  top: -72px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: top 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 200;
+  background: rgba(16, 185, 129, 0.09);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  border-radius: 100px;
+  padding: 9px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(52,211,153,0.14);
+  pointer-events: none;
+}
+.mini-widget.visible { top: 14px; }
+.mw-stat { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink-soft); }
+.mw-val { font-weight: 700; color: var(--accent-hi); font-size: 13px; font-variant-numeric: tabular-nums; }
+.mw-sep { color: var(--line-strong); font-size: 14px; }
+
 /* ‚îÄ‚îÄ Confetti ‚îÄ‚îÄ */
 #confetti-canvas {
   position: fixed; inset: 0; width: 100%; height: 100%;
@@ -794,6 +820,15 @@ button.btn-danger:hover {
       <h1>Mi camino sin tabaco</h1>
       <span id="level-badge" class="level-badge"></span>
       <button class="settings-btn" onclick="openSettings()">‚öôÔ∏è</button>
+    </div>
+
+    <!-- Mini floating widget (visible when hero scrolls out) -->
+    <div class="mini-widget" id="mini-widget" aria-hidden="true">
+      <span class="mw-stat">‚è± <span class="mw-val" id="mw-time">0h 0m</span></span>
+      <span class="mw-sep">¬∑</span>
+      <span class="mw-stat">üî• <span class="mw-val" id="mw-days">0</span> d√≠as</span>
+      <span class="mw-sep">¬∑</span>
+      <span class="mw-stat">üí∂ <span class="mw-val" id="mw-money">0,00 ‚Ç¨</span></span>
     </div>
 
     <div class="hero">
@@ -1113,6 +1148,15 @@ function init() {
     fastRender();
     setInterval(render, 1000);
     setInterval(fastRender, 100);
+
+    // Mini widget: aparece cuando el hero sale del viewport
+    const heroEl = document.querySelector('.hero');
+    const widgetEl = document.getElementById('mini-widget');
+    if (heroEl && widgetEl) {
+      new IntersectionObserver(entries => {
+        widgetEl.classList.toggle('visible', !entries[0].isIntersecting);
+      }, { threshold: 0 }).observe(heroEl);
+    }
   }
 }
 
@@ -1173,6 +1217,11 @@ function fastRender() {
 
   // Tiempo ‚Äî siempre con segundos visibles
   document.getElementById('time-display').textContent = fmtTime(mins);
+
+  // Mini widget
+  document.getElementById('mw-time').textContent  = fmtTime(mins);
+  document.getElementById('mw-days').textContent  = Math.floor(mins / (24*60));
+  document.getElementById('mw-money').textContent = money.toLocaleString('es-ES', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' ‚Ç¨';
 
   // Dinero ‚Äî 4 decimales para que siempre est√© movi√©ndose
   const moneyEl = document.getElementById('money-display');
