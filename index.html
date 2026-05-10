@@ -37,11 +37,43 @@ body {
   min-height: 100vh;
   padding: 20px 16px 110px;
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(16, 185, 129, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 88%, rgba(52, 211, 153, 0.14) 0%, transparent 52%),
     radial-gradient(ellipse at 50% 50%, rgba(6, 20, 14, 0.6) 0%, transparent 65%),
     linear-gradient(155deg, #060d0a 0%, #030808 45%, #050e0a 100%);
   background-attachment: fixed;
+}
+
+/* ‚îÄ‚îÄ Atmospheric background layers ‚îÄ‚îÄ */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-attachment: fixed;
+  transition: opacity 3s ease;
+  will-change: opacity;
+}
+/* Etapa 0: ambiente de fumador ‚Äî √°mbar tabacalero */
+#bg-smoke {
+  background:
+    radial-gradient(ellipse at 22% 15%, rgba(160, 110, 30, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 72% 82%, rgba(130, 85, 20, 0.16) 0%, transparent 50%);
+  opacity: 1;
+}
+/* Etapa 1: vida que vuelve ‚Äî verde esmeralda */
+#bg-life {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(16, 185, 129, 0.20) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 88%, rgba(52, 211, 153, 0.15) 0%, transparent 52%);
+  opacity: 0;
+}
+/* Etapa 2: plena vitalidad ‚Äî verde vibrante + halos extra */
+#bg-glow {
+  background:
+    radial-gradient(ellipse at 15% 10%,  rgba(16, 185, 129, 0.16) 0%, transparent 48%),
+    radial-gradient(ellipse at 85% 88%,  rgba(52, 211, 153, 0.13) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 18%,  rgba(52, 211, 153, 0.10) 0%, transparent 38%),
+    radial-gradient(ellipse at 28% 82%,  rgba(16, 185, 129, 0.08) 0%, transparent 36%);
+  opacity: 0;
 }
 
 .container { max-width: 680px; margin: 0 auto; }
@@ -724,6 +756,11 @@ button.btn-danger:hover {
 </head>
 <body>
 
+<!-- Atmospheric background layers (evolve with progress) -->
+<div id="bg-smoke" class="bg-layer"></div>
+<div id="bg-life"  class="bg-layer"></div>
+<div id="bg-glow"  class="bg-layer"></div>
+
 <div class="container">
 
   <!-- Setup screen -->
@@ -1155,6 +1192,7 @@ function render() {
   renderGoals(money);
   renderHealth(mins);
   renderCalendar(mins);
+  renderBackground(days, mins);
 }
 
 function renderGoals(money) {
@@ -1200,6 +1238,19 @@ function renderHealth(mins) {
       </div>`;
     list.appendChild(el);
   });
+}
+
+function renderBackground(days, mins) {
+  // Humo tabacalero: visible al inicio, desaparece en 48h
+  const smoke = Math.max(0, 1 - mins / (60 * 48));
+  // Vida verde: crece durante la primera semana
+  const life = Math.min(1, Math.max(0, days / 7));
+  // Brillo pleno: aparece del d√≠a 30 al 90
+  const glow = Math.min(1, Math.max(0, (days - 30) / 60));
+
+  document.getElementById('bg-smoke').style.opacity = smoke;
+  document.getElementById('bg-life').style.opacity  = life;
+  document.getElementById('bg-glow').style.opacity  = glow;
 }
 
 function renderCalendar(mins) {
